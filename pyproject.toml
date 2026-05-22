@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sandiego-municipal-code-mcp"
+version = "0.1.0"
+description = "Model Context Protocol server for the San Diego Municipal Code, bulletins, permits, and zoning data. Built by Estate Atlas."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Estate Atlas", email = "hello@estateatlas.ai" }]
+keywords = ["mcp", "model-context-protocol", "san-diego", "municipal-code", "zoning", "permits", "rag", "legal", "regulatory"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+  "mcp>=1.0,<2",
+  "psycopg[binary]>=3.1",
+  "voyageai>=0.3",
+  "python-dotenv>=1.0",
+  "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+]
+http = [
+  # Public HTTP/SSE transport at sandiego.estateatlas.ai/mcp
+  "starlette>=0.37",
+  "uvicorn[standard]>=0.27",
+  "sse-starlette>=2.0",
+]
+
+[project.scripts]
+sandiego-municipal-code-mcp = "sandiego_mcp.server:run"
+
+[project.urls]
+Homepage = "https://estateatlas.ai"
+Repository = "https://github.com/estate-atlas/sandiego-mcp"
+Issues = "https://github.com/estate-atlas/sandiego-mcp/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

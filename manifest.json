@@ -1,0 +1,92 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/manifest.json",
+  "name": "sandiego-municipal-code",
+  "version": "0.1.0",
+  "display_name": "Estate Atlas: SD-MCP",
+  "description": "Authoritative MCP for the City of San Diego municipal code, information bulletins, permits, code-enforcement, zoning, and parcel data. Every response includes machine-readable freshness, citations, and PDF source links. Built by Estate Atlas.",
+  "vendor": {
+    "name": "Estate Atlas",
+    "url": "https://estateatlas.ai",
+    "email": "hello@estateatlas.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://estateatlas.ai",
+  "repository": "https://github.com/estate-atlas/sandiego-mcp",
+  "issues": "https://github.com/estate-atlas/sandiego-mcp/issues",
+  "tags": [
+    "san-diego",
+    "municipal-code",
+    "zoning",
+    "permits",
+    "land-use",
+    "real-estate",
+    "regulatory",
+    "legal",
+    "civic-tech",
+    "government",
+    "california",
+    "rag"
+  ],
+  "categories": ["government", "legal", "real-estate", "research"],
+  "transports": ["stdio"],
+  "install": {
+    "stdio": {
+      "command": "uvx",
+      "args": ["sandiego-municipal-code-mcp"]
+    }
+  },
+  "environment": {
+    "required": [
+      {
+        "name": "SANDIEGO_MCP_DATABASE_URL",
+        "description": "Postgres connection string (read-only role) pointing at the San Diego municipal data warehouse. Falls back to DATABASE_URL.",
+        "secret": true
+      },
+      {
+        "name": "SANDIEGO_MCP_VOYAGE_API_KEY",
+        "description": "Voyage AI API key (Anthropic's embedding partner), used to embed search queries (voyage-4-large, 1024 dims). Falls back to VOYAGE_API_KEY.",
+        "secret": true
+      }
+    ],
+    "optional": [
+      {
+        "name": "SANDIEGO_MCP_EMBEDDING_MODEL",
+        "description": "Override the embedding model (must match the model the DB was re-indexed with).",
+        "default": "voyage-4-large"
+      },
+      {
+        "name": "SANDIEGO_MCP_EMBEDDING_DIM",
+        "description": "Override the embedding dimension.",
+        "default": "1024"
+      },
+      {
+        "name": "SANDIEGO_MCP_LOG_LEVEL",
+        "description": "Log level (DEBUG, INFO, WARNING, ERROR). Logs go to stderr.",
+        "default": "INFO"
+      }
+    ]
+  },
+  "tools": [
+    "search_municipal_code",
+    "get_code_section",
+    "get_table_of_contents",
+    "list_bulletins",
+    "get_bulletin",
+    "lookup_parcel",
+    "get_permits_for_parcel",
+    "get_violations_for_parcel",
+    "get_setbacks_for_zone",
+    "get_zone_info",
+    "data_freshness",
+    "get_case_rulings"
+  ],
+  "data_sources": [
+    {"name": "San Diego Municipal Code", "refresh": "monthly", "records": 1966},
+    {"name": "Information Bulletins", "refresh": "monthly", "records": 456},
+    {"name": "Building Permits", "refresh": "weekly", "records": 240000},
+    {"name": "Code Enforcement", "refresh": "weekly", "records": 17400},
+    {"name": "Parcels", "refresh": "quarterly", "records": 1090000},
+    {"name": "Zoning Parcels", "refresh": "quarterly"},
+    {"name": "Zone Setbacks", "refresh": "on-ordinance-change", "records": 21}
+  ]
+}
