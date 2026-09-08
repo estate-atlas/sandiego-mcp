@@ -1,6 +1,6 @@
 """Live smoke test: hits the real Supabase DB and Voyage AI (embeddings).
 
-Reads /Users/paulrosenberg/CodeProjects/david/.env, exercises each tool,
+Reads <estate-atlas-municipal>/.env, exercises each tool,
 prints a short summary. Run from the mcp-server/ directory:
 
     .venv/bin/python scripts/live_smoke.py
